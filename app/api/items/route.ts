@@ -3,6 +3,9 @@ import listItems from "app/items/queries/listItems"
 import upsertItem from "app/items/mutations/upsertItem"
 import { createMockContext } from "app/lib/mock-context"
 
+// Mark this route as dynamic since it uses request.headers
+export const dynamic = 'force-dynamic'
+
 export async function GET(request: NextRequest) {
   try {
     // Get the authorization header

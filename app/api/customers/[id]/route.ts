@@ -1,6 +1,11 @@
 import { NextRequest, NextResponse } from "next/server"
+import createCustomer from "app/customers/mutations/createCustomer"
+import listCustomers from "app/customers/queries/listCustomers"
 import { createMockContext } from "app/lib/mock-context"
 import db from "db"
+
+// Mark this route as dynamic since it uses request.headers
+export const dynamic = 'force-dynamic'
 
 export async function GET(
   request: NextRequest,

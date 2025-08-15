@@ -2,6 +2,9 @@ import { NextRequest, NextResponse } from "next/server"
 import getOrderHistory from "app/orders/queries/getOrderHistory"
 import { createMockContext } from "app/lib/mock-context"
 
+// Mark this route as dynamic since it uses request.headers
+export const dynamic = 'force-dynamic'
+
 export async function GET(
   request: NextRequest,
   { params }: { params: { id: string } }

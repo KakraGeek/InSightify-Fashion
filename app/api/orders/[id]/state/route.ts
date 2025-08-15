@@ -2,7 +2,10 @@ import { NextRequest, NextResponse } from "next/server"
 import updateOrderState from "app/orders/mutations/updateOrderState"
 import { createMockContext } from "app/lib/mock-context"
 
-export async function PATCH(
+// Mark this route as dynamic since it uses request.headers
+export const dynamic = 'force-dynamic'
+
+export async function PUT(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {

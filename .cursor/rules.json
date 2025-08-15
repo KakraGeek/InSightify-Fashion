@@ -1,0 +1,18 @@
+{
+  "style": {
+    "indentation": "2 spaces",
+    "quotes": "double",
+    "trailing_commas": true
+  },
+  "security": {
+    "owasp_top_10": true,
+    "row_level_tenancy": true
+  },
+  "testing": {
+    "smoke_runner": "npm run smoke",
+    "e2e": "playwright"
+  },
+  "prompts": {
+    "slice": "Implement the next vertical slice, add smoke tests, run `npm run smoke`, then pause for approval."
+  }
+}

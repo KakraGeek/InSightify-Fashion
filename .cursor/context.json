@@ -1,0 +1,37 @@
+{
+  "context": [
+    {
+      "type": "file",
+      "path": "docs/prd.md"
+    },
+    {
+      "type": "file",
+      "path": "docs/architecture.md"
+    },
+    {
+      "type": "file",
+      "path": "docs/test-plan.md"
+    },
+    {
+      "type": "file",
+      "path": "docs/smart-prompts.md"
+    },
+    {
+      "type": "file",
+      "path": ".cursor/rules.json"
+    },
+    {
+      "type": "file",
+      "path": "insightify_fashion_cursor_agent_prompt_blitz.md"
+    },
+    {
+      "type": "file",
+      "path": "mcp.yaml"
+    }
+  ],
+  "rules": {
+    "security": true,
+    "style": true,
+    "testing": true
+  }
+}

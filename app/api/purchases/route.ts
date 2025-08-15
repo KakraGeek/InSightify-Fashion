@@ -2,6 +2,9 @@ import { NextRequest, NextResponse } from "next/server"
 import recordPurchase from "app/purchase/mutations/recordPurchase"
 import { createMockContext } from "app/lib/mock-context"
 
+// Mark this route as dynamic since it uses request.headers
+export const dynamic = 'force-dynamic'
+
 export async function POST(request: NextRequest) {
   try {
     // Get the authorization header

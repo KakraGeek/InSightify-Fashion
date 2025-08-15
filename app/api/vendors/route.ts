@@ -3,6 +3,9 @@ import listVendors from "app/vendors/queries/listVendors"
 import createVendor from "app/vendors/mutations/createVendor"
 import { createMockContext } from "app/lib/mock-context"
 
+// Mark this route as dynamic since it uses request.headers
+export const dynamic = 'force-dynamic'
+
 export async function GET(request: NextRequest) {
   try {
     // Get the authorization header
