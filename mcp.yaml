@@ -1,0 +1,43 @@
+name: insightify_fashion_blitz
+description: Blitz.js + Next.js execution plan with smoke tests and pause-after-slice
+context:
+  - docs/prd.md
+  - docs/architecture.md
+  - docs/test-plan.md
+  - docs/smart-prompts.md
+  - .cursor/rules.json
+  - insightify_fashion_cursor_agent_prompt_blitz.md
+workflow:
+  - step: "Phase 0: Tooling & Smoke Runner"
+    prompt: |
+      Ensure scripts exist (smoke, smoke:api, smoke:ui). Verify tests/smoke/api-smoke.js and a Playwright @smoke spec. Output commands, run npm run smoke, and stop for approval.
+  - step: "Slice 1: Auth + Session + Tenancy"
+    prompt: |
+      Implement login, session with {userId, role, workspaceId}, and enforce workspaceId scoping in resolvers. Write smoke tests (API: whoami + protected list; UI: login→dashboard). Run npm run smoke and pause.
+  - step: "Slice 2: Customers + Quick Order Intake"
+    prompt: |
+      Implement customer CRUD and order intake; jobNumber per workspace. Smoke: API create/list; UI create appears. Run npm run smoke and pause.
+  - step: "Slice 3: Dashboard + Colour Coding"
+    prompt: |
+      Implement dashboard counts + dueSoon/overdue with amber/red badges. Smoke: API counts; UI badges visible. Run npm run smoke and pause.
+  - step: "Slice 4: Order State Machine + SMS"
+    prompt: |
+      Implement transitions and SMS (mock ok). Smoke: API transitions persisted; UI reflects. Run npm run smoke and pause.
+  - step: "Slice 5: Inventory + Reorder Alerts"
+    prompt: |
+      Implement items CRUD, purchases increment stock, and alert badges. Smoke: API threshold alerts; UI badge visible. Run npm run smoke and pause.
+  - step: "Slice 6: Reports MVP"
+    prompt: |
+      Implement from/to reports (orders/purchases). Smoke: API schema + range; UI totals update. Run npm run smoke and pause.
+  - step: "Hardening: RBAC + Validation + Rate Limit"
+    prompt: |
+      OWNER vs STAFF guards, Zod validation, and rate-limit sensitive mutations. Smoke: STAFF forbidden; invalid payloads rejected. Run npm run smoke and pause.
+commands:
+  - name: Dev
+    run: "npm run dev"
+  - name: Migrate
+    run: "npm run prisma:migrate"
+  - name: Seed
+    run: "npm run seed"
+  - name: Smoke
+    run: "npm run smoke"

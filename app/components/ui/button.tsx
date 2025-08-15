@@ -1,0 +1,1 @@
+export function Button({className='', children, ...props}:{className?:string; children:any; [k:string]:any}){return <button className={`px-3 py-2 rounded-lg shadow hover:opacity-90 ${className}`} {...props}>{children}</button>}

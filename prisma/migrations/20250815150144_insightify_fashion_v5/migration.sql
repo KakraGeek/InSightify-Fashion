@@ -1,0 +1,21 @@
+-- AlterTable
+ALTER TABLE "Customer" ADD COLUMN "address" TEXT;
+ALTER TABLE "Customer" ADD COLUMN "ankle" REAL;
+ALTER TABLE "Customer" ADD COLUMN "armhole" REAL;
+ALTER TABLE "Customer" ADD COLUMN "backLength" REAL;
+ALTER TABLE "Customer" ADD COLUMN "calf" REAL;
+ALTER TABLE "Customer" ADD COLUMN "chest" REAL;
+ALTER TABLE "Customer" ADD COLUMN "crotch" REAL;
+ALTER TABLE "Customer" ADD COLUMN "email" TEXT;
+ALTER TABLE "Customer" ADD COLUMN "fabricPreferences" TEXT;
+ALTER TABLE "Customer" ADD COLUMN "height" REAL;
+ALTER TABLE "Customer" ADD COLUMN "hips" REAL;
+ALTER TABLE "Customer" ADD COLUMN "inseam" REAL;
+ALTER TABLE "Customer" ADD COLUMN "knee" REAL;
+ALTER TABLE "Customer" ADD COLUMN "neck" REAL;
+ALTER TABLE "Customer" ADD COLUMN "preferredFit" TEXT;
+ALTER TABLE "Customer" ADD COLUMN "shoulder" REAL;
+ALTER TABLE "Customer" ADD COLUMN "sleeveLength" REAL;
+ALTER TABLE "Customer" ADD COLUMN "thigh" REAL;
+ALTER TABLE "Customer" ADD COLUMN "waist" REAL;
+ALTER TABLE "Customer" ADD COLUMN "weight" REAL;

@@ -1,0 +1,194 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Workspace {
+  id        String    @id @default(cuid())
+  name      String
+  users     User[]
+  customers Customer[]
+  vendors   Vendor[]
+  items     Item[]
+  orders    Order[]
+  purchases Purchase[]
+  attachments OrderAttachment[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model User {
+  id           String    @id @default(cuid())
+  email        String    @unique
+  password     String
+  name         String?
+  role         String    @default("OWNER")
+  workspaceId  String
+  workspace    Workspace @relation(fields: [workspaceId], references: [id])
+  sessions    Session[]
+  stateLogs    OrderStateLog[]
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}
+
+
+
+model Customer {
+  id           String    @id @default(cuid())
+  workspaceId  String
+  workspace    Workspace @relation(fields: [workspaceId], references: [id])
+  name         String
+  phone        String
+  email        String?
+  address      String?
+  notes        String?
+  
+  // Basic measurements
+  height       Float?    // in cm
+  weight       Float?    // in kg
+  
+  // Upper body measurements
+  chest        Float?    // in cm
+  waist        Float?    // in cm
+  hips         Float?    // in cm
+  shoulder     Float?    // in cm
+  sleeveLength Float?    // in cm
+  neck         Float?    // in cm
+  armhole      Float?    // in cm
+  
+  // Lower body measurements
+  inseam       Float?    // in cm
+  thigh        Float?    // in cm
+  knee         Float?    // in cm
+  calf         Float?    // in cm
+  ankle        Float?    // in cm
+  
+  // Special measurements
+  backLength   Float?    // in cm
+  crotch       Float?    // in cm
+  
+  // Preferences
+  preferredFit String?   // e.g., "loose", "regular", "tight"
+  fabricPreferences String? // e.g., "cotton", "linen", "silk"
+  
+  orders       Order[]
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}
+
+model Vendor {
+  id           String    @id @default(cuid())
+  workspaceId  String
+  workspace    Workspace @relation(fields: [workspaceId], references: [id])
+  name         String
+  phone        String?
+  email        String?
+  address      String?
+  notes        String?
+  items        Item[]
+  purchases    Purchase[]
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Item {
+  id           String    @id @default(cuid())
+  workspaceId  String
+  workspace    Workspace @relation(fields: [workspaceId], references: [id])
+  name         String
+  description  String?
+  qty          Int       @default(0)
+  unitPrice    Decimal   @default(0) @db.Decimal(10,2)
+  reorderLevel Int       @default(0)
+  vendorId     String?
+  vendor       Vendor?   @relation(fields: [vendorId], references: [id])
+  purchases    Purchase[]
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}
+
+model Order {
+  id            String     @id @default(cuid())
+  workspaceId   String
+  workspace     Workspace  @relation(fields: [workspaceId], references: [id])
+  customerId    String
+  customer      Customer   @relation(fields: [customerId], references: [id])
+  jobNumber     Int
+  title         String
+  state         String    @default("OPEN")
+  dueDate       DateTime
+  extendedEta   DateTime?
+  amount        Decimal    @default(0) @db.Decimal(10,2)
+  attachments   OrderAttachment[]
+  stateLogs     OrderStateLog[]
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+
+  @@index([workspaceId, jobNumber])
+}
+
+model OrderAttachment {
+  id          String   @id @default(cuid())
+  orderId     String
+  order       Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  workspaceId String
+  workspace   Workspace @relation(fields: [workspaceId], references: [id])
+  
+  // File information
+  fileName    String
+  originalName String
+  fileType    String    // e.g., "image/jpeg", "image/png"
+  fileSize    Int       // in bytes
+  filePath    String    // path to stored file
+  
+  // Metadata
+  description String?   // e.g., "Client fabric sample", "Design sketch"
+  category   String    // e.g., "fabric", "sketch", "reference"
+  
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+}
+
+
+
+model Purchase {
+  id           String    @id @default(cuid())
+  workspaceId  String
+  workspace    Workspace @relation(fields: [workspaceId], references: [id])
+  vendorId     String?
+  vendor       Vendor?   @relation(fields: [vendorId], references: [id])
+  itemId       String?
+  item         Item?     @relation(fields: [itemId], references: [id])
+  qty          Int
+  unitPrice    Decimal @db.Decimal(10,2)
+  total        Decimal @db.Decimal(10,2)
+  date         DateTime
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Session {
+  id         String   @id @default(cuid())
+  userId     String   @unique
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tokenHash  String   @unique
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+}
+
+model OrderStateLog {
+  id          String   @id @default(cuid())
+  orderId     String
+  order       Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  fromState   String
+  toState     String
+  changedBy   String
+  user        User     @relation(fields: [changedBy], references: [id], onDelete: Cascade)
+  notes       String?
+  extendedEta DateTime?
+  createdAt   DateTime @default(now())
+}

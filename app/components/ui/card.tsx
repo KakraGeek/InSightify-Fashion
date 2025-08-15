@@ -1,0 +1,1 @@
+export function Card({className='', children}:{className?:string; children:any}){return <div className={`rounded-2xl shadow p-4 bg-white ${className}`}>{children}</div>}
