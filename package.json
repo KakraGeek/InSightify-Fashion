@@ -13,7 +13,8 @@
     "test:e2e": "playwright test",
     "smoke:ui": "playwright test --grep @smoke",
     "smoke:api": "node tests/smoke/api-smoke.js",
-    "smoke": "npm run smoke:api && npm run smoke:ui"
+    "smoke:hardening": "node tests/smoke/hardening-smoke.js",
+    "smoke": "npm run smoke:api && npm run smoke:ui && npm run smoke:hardening"
   },
   "dependencies": {
     "@blitzjs/auth": "^3.0.1",
